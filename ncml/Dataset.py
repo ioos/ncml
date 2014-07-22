@@ -58,7 +58,8 @@ class NcmlDataset(object):
             exists.attrib["name"] = key
             exists.attrib["value"] = value
         else:
-            NewElement = Element("{http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2}attribute", name=key, value=value)
+            NewElement = Element("{http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2}attribute", 
+            name=key, value=value)
             netcdfroot.append(NewElement)
         
         
@@ -75,20 +76,42 @@ class NcmlDataset(object):
         
     def removeDatasetAttribute(self, key):
         '''
-        removeDatasetAttribute('keyName')
+        removeDatasetAttribute('Global_attrName')
         '''
-        netcdfroot = self.doctree.getroot()
-        exists = netcdfroot.find(("{http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2}attribute[@name='" + key + "']"))
-        if exists is not None:
-            netcdfroot._children.remove(exists)
-        else:
-            pass
+        NewElement = Element("{http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2}remove", 
+        type='attribute',name=key)
+        netcdfroot.append(NewElement)
+        
+    def removeDatasetVariable(self, key):
+        '''
+        removeDatasetVariable('VarName')
+        '''
+        NewElement = Element("{http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2}remove", 
+        type='variable',name=key)
+        netcdfroot.append(NewElement)    
+        
+    def removeDatasetDimension(self, key):
+        '''
+        removeDatasetVariable('DimName')
+        '''
+        NewElement = Element("{http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2}remove", 
+        type='dimension',name=key)
+        netcdfroot.append(NewElement) 
             
     def removeVariableAttribute(self, variable, key):
         '''
         removeVariableAttribute('varName', 'attrName')
         '''
-        pass
+        netcdfroot = self.doctree.getroot()
+        Var = netcdfroot.find(("{http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2}variable[@name='" + variable + "']"))
+        NewElement = Element("{http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2}remove", 
+        type='attribute',name=key)
+        if Var is not None:
+            Var.append(NewElement)
+        else:
+            NewVarElement = Element("{http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2}variable", name=variable)
+            NewVarElement.append(NewElement)
+            netcdfroot.append(NewVarElement)
     
     def addAggregation(self, agg):
         def createAggTags(type, dimName=None, ):
