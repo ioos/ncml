@@ -78,6 +78,7 @@ class NcmlDataset(object):
         '''
         removeDatasetAttribute('Global_attrName')
         '''
+        netcdfroot = self.doctree.getroot()
         NewElement = Element("{http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2}remove", 
         type='attribute',name=key)
         netcdfroot.append(NewElement)
@@ -86,6 +87,7 @@ class NcmlDataset(object):
         '''
         removeDatasetVariable('VarName')
         '''
+        netcdfroot = self.doctree.getroot()
         NewElement = Element("{http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2}remove", 
         type='variable',name=key)
         netcdfroot.append(NewElement)    
