@@ -96,6 +96,7 @@ class NcmlDataset(object):
         '''
         removeDatasetVariable('DimName')
         '''
+        netcdfroot = self.doctree.getroot()
         NewElement = Element("{http://www.unidata.ucar.edu/namespaces/netcdf/ncml-2.2}remove", 
         type='dimension',name=key)
         netcdfroot.append(NewElement) 
